@@ -1,0 +1,100 @@
+﻿<!DOCTYPE  html>
+<html lang="zh-cn">
+   <head>
+      <meta charset="utf-8"/>
+      <title>This is my title</title>
+      <style>
+         #container {
+             margin:20px auto;
+             width:400px;
+             height:600px;
+             background-color:rgb(238,238,238);
+             padding-top:20px;
+             position:relative;
+         }
+         #title {
+             margin:0 auto;
+             font-family:SimHei;
+             font-size:25px;
+             width:50px;
+         }
+         #description {
+             margin:40px auto;
+             width:300px;
+             font-family:STSong
+         }
+         #food {
+             position:absolute;
+             bottom:30px;
+             right:30px;
+             background-color:white;
+             height:300px;
+             width:300px;
+             overflow:visible;
+         }
+         .part {
+             border:solid white 2px;
+             width:165px;
+             height:165px;
+             position:absolute;
+             animation-duration:2s;
+             animation-timing-function:linear;
+             animation-iteration-count:1;
+         }
+         /*图片500x331,所以计算出下面的一些值*/
+         #p1 {             
+             background:url(images/food.jpg) -85px 0px no-repeat;
+             margin:-15px 0 0 -15px;
+             animation-name:myfirst;
+             top:0;left:0;
+         }
+         #p2 {
+             background:url(images/food.jpg) -250px 0px no-repeat;
+             margin:-15px -15px 0 0 ;            
+             top:0;left:50%;
+             animation-name:mysecond;
+         }
+         #p3 {
+             background:url(images/food.jpg) -85px -165px no-repeat;
+             margin:0 0 -15px -15px; 
+             top:50%;left:0;
+             animation-name:mythird;             
+         }
+         #p4 {
+             background:url(images/food.jpg) -250px -165px no-repeat;
+             margin:0 -15px -15px 0;
+             top:50%;left:50%;
+             animation-name:myfourth;
+         }
+ 
+         @keyframes myfirst{
+             0% {transform:translate(-100px,-100px);}
+           100% {transform:translate(0px,0px);}
+          }
+         @keyframes mysecond{
+             0% {transform:translate(100px,-100px);}
+           100% {transform:translate(0px,0px);}
+          }
+         @keyframes mythird{
+             0% {transform:translate(-100px,100px);}
+           100% {transform:translate(0px,0px);}
+          }
+         @keyframes myfourth{
+             0% {transform:translate(100px,100px);}
+           100% {transform:translate(0px,0px);}
+          }
+      </style>
+   </head>
+   <body>
+     <div id="container">
+        <div id="title">美食</div>
+        <div id="description">这是一款意大利牛肉卷，采用了熏牛肉、奶酪、酱进行烹制，色泽诱人，美味可口，欢迎大家前来品尝!</div>
+        <div id="food">
+           <div id="p1" class="part"></div>
+           <div id="p2" class="part"></div>
+           <div id="p3" class="part"></div>
+           <div id="p4" class="part"></div>
+        </div>
+     </div>
+    </body>
+</html>
