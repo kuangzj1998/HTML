@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slider</title>
+    <style>
+        #picture{
+            position:relative;
+            white-space:nowrap;
+            animation-duration:1s;
+            animation-timing-function:linear;
+            animation-iteration-count:infinite;
+        }
+        @keyframes frame0 { 
+             0%{margin-left:0px}
+           100%{margin-left:-770px}
+        }
+        @keyframes frame1 { 
+             0%{margin-left:-770px}
+           100%{margin-left:-1540px}
+        }
+        @keyframes frame2 { 
+             0%{margin-left:-1540px}
+           100%{margin-left:-2310px}
+        }
+        #window{
+            position:relative;
+            width:770px;
+            margin:0 auto;
+            overflow:hidden;
+            user-select:none;
+        }
+        .background{
+            margin:0;
+            padding:0;
+        }
+        #window .point_group .selected{
+            background-position:0px -24px;
+        }
+        .point_group{
+            position:absolute;
+            right:60px;
+            bottom:15px;
+        }
+        .point_group div{
+            background:url(./images/navigator.png);
+            width:12px;
+            height:12px;
+            display:inline-block;
+            cursor:pointer;
+        }
+        .arrow{
+            height:80px;
+            width:32px;
+            position:absolute;
+            top:110px;
+            visibility:hidden;
+        }
+        .arrow:hover{
+            cursor:pointer;
+        }
+        #left_arrow{
+            background:url(./images/arrows-30.png);
+            background-position:-64px 0px;
+            left:10px;
+        }
+        #right_arrow{
+            background:url(./images/arrows-30.png);
+            background-position:-64px -80px;          
+            right:10px;            
+        }
+        #window:hover #left_arrow{visibility:visible}
+        #window:hover #right_arrow{visibility:visible}
+    </style>
+</head>
+<body>
+    <div id="window">
+        <div id="picture">
+            <img src="./images/img1.jpg" /><img src="./images/img2.jpg" /><img src="./images/img3.jpg" /><img src="./images/img1.jpg" />
+            <div class="point_group">
+                <div id="point0"></div><div id="point1"></div><div id="point2"></div>
+            </div>
+        </div>
+        <div id="left_arrow" class="arrow"></div>
+        <div id="right_arrow" class="arrow"></div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    var index = 0;
+    var offset = ["0px","-770px","-1540px"];
+    var ex;
+    function clear(){
+        document.querySelector("#picture").style.animationName = "none";
+    }
+    function timer(){
+        var point = document.getElementById("point"+index);
+        point.removeAttribute("class");
+        var picture = document.getElementById("picture");
+        //alert(index);
+        document.querySelector("#picture").style.animationName = "frame"+index;
+        setTimeout(clear, 1000);
+        index = (index+1)%3;
+        picture.style.marginLeft=offset[index];
+        point = document.getElementById("point"+index);
+        point.setAttribute("class","selected");        
+        ex = setTimeout(timer, 2000);
+    }
+    var p0 = document.getElementById("point0");
+    var p1 = document.getElementById("point1");
+    var p2 = document.getElementById("point2");
+    p0.setAttribute('class','selected');
+    p0.addEventListener('click', function(){
+            index = 0;
+            var picture = document.getElementById("picture");
+            picture.style.marginLeft=offset[index];
+            p0.setAttribute("class","selected");
+            p1.removeAttribute("class");
+            p2.removeAttribute("class");
+        },false); 
+    p1.addEventListener('click', function(){
+            index = 1;
+            var picture = document.getElementById("picture");
+            picture.style.marginLeft=offset[index];
+            p1.setAttribute("class","selected");
+            p0.removeAttribute("class");
+            p2.removeAttribute("class");
+        },false); 
+    p2.addEventListener('click', function(){
+            index = 2;
+            var picture = document.getElementById("picture");
+            picture.style.marginLeft=offset[index];
+            p2.setAttribute("class","selected");
+            p1.removeAttribute("class");
+            p0.removeAttribute("class");
+        },false); 
+    ex = setTimeout(timer, 2000);
+    var pr = document.getElementById("picture");
+    var al = document.getElementById("left_arrow");
+    var ar = document.getElementById("right_arrow");
+    pr.addEventListener('mouseover', function(){
+            clearTimeout(ex);
+        },false); 
+    pr.addEventListener('mouseout', function(){       
+            ex = setTimeout(timer, 2000);
+        },false); 
+    al.addEventListener('click', function(){
+        var point = document.getElementById("point"+index);
+        point.classList.remove("selected");
+        var picture = document.getElementById("picture");
+        index = (index+2)%3;
+        picture.style.marginLeft=offset[index];
+        point = document.getElementById("point"+index);
+        point.classList.add("selected");
+    },false); 
+    al.addEventListener('mouseover', function(){
+        clearTimeout(ex);
+        al.style.backgroundPosition="-32px 0px";
+    },false); 
+    al.addEventListener('mouseout', function(){
+        ex = setTimeout(timer, 2000);
+        al.style.backgroundPosition="-64px 0px";
+    },false); 
+    ar.addEventListener('click', function(){
+        var point = document.getElementById("point"+index);
+        point.classList.remove("selected");
+        var picture = document.getElementById("picture");
+        index = (index+1)%3;
+        picture.style.marginLeft=offset[index];
+        point = document.getElementById("point"+index);
+        point.classList.add("selected");
+    },false); 
+    ar.addEventListener('mouseover', function(){
+        clearTimeout(ex);
+        ar.style.backgroundPosition="-32px -80px";
+    },false); 
+    ar.addEventListener('mouseout', function(){
+        ex = setTimeout(timer, 2000);
+        ar.style.backgroundPosition="-64px -80px";
+    },false); 
+</script>
