@@ -1,0 +1,106 @@
+<!DOCTYPE  html>
+<html  lang="zh-cn">
+<head>
+<title>计时器</title>
+  <style> 
+    .time {display:inline-block;width:3.6em;text-align:right;margin-left: 4px;}
+    #container,h1 {width:20em;margin:10px auto;text-align:center;}
+    .timer {margin-top:20px;text-align: center}
+    .pressed {background:yellow};     
+  </style>
+  <script>
+    var max = 1;
+    var A = new Array();
+    function controller(){}
+    controller.prototype.time = 0;
+    controller.prototype.selected = 0;
+    controller.prototype.handler = 0;
+    function c_start(x){
+      var f = function(){
+        if(A[x-1].selected == 0){
+          A[x-1].selected=1;
+          A[x-1].handler = setInterval(function(){
+            A[x-1].time+=0.01;
+            var node = document.getElementsByClassName("s"+x);
+            node[0].childNodes[0].innerHTML=A[x-1].time.toFixed(2);
+          }, 10);
+        }
+        else if(A[x-1].selected != 1){ //不能运行时运行
+          var node = document.getElementsByClassName("s"+x);
+          if(A[x-1].selected==2){
+            A[x-1].time=0;
+            A[x-1].handler = setInterval(function(){
+              A[x-1].time+=0.01;
+              node[0].childNodes[0].innerHTML=A[x-1].time.toFixed(2);
+            }, 10);
+          }
+          else{
+            A[x-1].handler = setInterval(function(){
+              A[x-1].time+=0.01;
+              node[0].childNodes[0].innerHTML=A[x-1].time.toFixed(2);
+            }, 10);
+          }
+          node[0].childNodes[2*A[x-1].selected].classList.remove("pressed");
+          node[0].childNodes[2].classList.add("pressed");
+          A[x-1].selected=1;
+        }
+      }
+      return f;
+    }
+    function c_stop(x){
+      var f = function(){
+        if(A[x-1].selected == 1){ //只有运行可以停止
+          clearInterval(A[x-1].handler);
+          A[x-1].selected=2;
+          var node = document.getElementsByClassName("s"+x);
+          node[0].childNodes[2].classList.remove("pressed");
+          node[0].childNodes[4].classList.add("pressed");
+        }
+      }
+      return f;
+    }
+    function c_pause(x){
+      var f = function(){
+        if(A[x-1].selected == 1){ //只有运行时可以暂停
+          clearInterval(A[x-1].handler);
+          A[x-1].selected=3;
+          var node = document.getElementsByClassName("s"+x);
+          node[0].childNodes[2].classList.remove("pressed");
+          node[0].childNodes[6].classList.add("pressed");
+        }
+      }
+      return f;
+    }
+    function addTimer(){
+      var timer = document.getElementsByClassName("s0");
+      var addtimer = timer[0].cloneNode(true);
+      addtimer.style.display = "block";
+      addtimer.classList.remove("s0");
+      addtimer.classList.add("s"+max);
+      A.push(new controller());
+      var c = new c_start(max);
+      addtimer.childNodes[2].addEventListener('click',c);
+      addtimer.childNodes[4].addEventListener('click',new c_stop(max));
+      addtimer.childNodes[6].addEventListener('click',new c_pause(max));
+      //2,4,6对应三个按钮
+      //计时器1开始，controller0开始
+      max++;
+      document.body.append(addtimer);
+      c();
+    }
+  </script>
+</head>
+<body>
+  <h1>计时器</h1>
+
+  <div id="container">
+     <input type="button" class="add" value="增加计时器(秒表)" onclick="addTimer()">
+     <div class="timer s0" style="display:none"><span class="time">0.00</span>
+          <input type="button" class="start pressed" value="启动">
+          <input type="button" class="stop" value="停止">
+          <input type="button" class="pause" value="暂停">
+     </div>
+  </div>
+
+</body>
+</html>
